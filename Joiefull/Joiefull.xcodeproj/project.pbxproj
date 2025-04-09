@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		D0BDC1D12DA5791100B9F0F8 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D0BDC1D02DA5791100B9F0F8 /* README.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		D09A4CE02D88F96500B57105 /* Joiefull.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Joiefull.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0BDC1D02DA5791100B9F0F8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -32,6 +37,7 @@
 		D09A4CD72D88F96500B57105 = {
 			isa = PBXGroup;
 			children = (
+				D0BDC1D02DA5791100B9F0F8 /* README.md */,
 				D09A4CE22D88F96500B57105 /* Joiefull */,
 				D09A4CE12D88F96500B57105 /* Products */,
 			);
@@ -109,6 +115,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0BDC1D12DA5791100B9F0F8 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

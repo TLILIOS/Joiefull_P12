@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  Joiefull
-//
-//  Created by TLiLi Hamdi on 18/03/2025.
-//
-
 import SwiftUI
 
 struct ContentView: View {
@@ -28,4 +21,3 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
-
