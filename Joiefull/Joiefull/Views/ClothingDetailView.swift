@@ -36,9 +36,11 @@ struct ClothingDetailView: View {
                     addToCartButton
                 }
                 .padding()
+                .padding(.bottom, 60)
             }
         }
-        .ignoresSafeArea(edges: .top)
+         
+        
         .navigationBarBackButtonHidden(false)
         .navigationBarTitle("", displayMode: .inline)
         .toolbar {
@@ -233,9 +235,9 @@ struct ClothingDetailView: View {
             .foregroundColor(.white)
             .cornerRadius(10)
         }
-        .padding(.top, 20)
+        .padding(.bottom, 20)
     }
-    
+       
     private var navigationTitleView: some View {
         HStack {
             Text("Home")

@@ -3,14 +3,17 @@ import SwiftUI
 struct ClothingItemView: View {
     var item: ClothingItem
     var onFavoriteToggle: () -> Void
-    @ObservedObject var viewModel: ClothingViewModel
+    @ObservedObject var homeViewModel: HomeViewModel
+    
+    // Image cache locale pour éviter de recharger l'image à chaque rendu
+    @State private var cachedImage: Image? = nil
     
     var body: some View {
-        NavigationLink(destination: ClothingDetailView(item: item, onFavoriteToggle: onFavoriteToggle, viewModel: viewModel)) {
+        NavigationLink(destination: ClothingDetailView(item: item, onFavoriteToggle: onFavoriteToggle)) {
             VStack(alignment: .leading, spacing: 6) {
                 // Image
                 ZStack(alignment: .topTrailing) {
-                    viewModel.getImage(for: item)
+                    getItemImage()
                         .resizable()
                         .scaledToFill()
                         .frame(height: 160)
@@ -79,14 +82,31 @@ struct ClothingItemView: View {
         }
         .buttonStyle(PlainButtonStyle())
     }
+    
+    // Méthode pour obtenir l'image de l'article
+    private func getItemImage() -> Image {
+        if let cachedImage = cachedImage {
+            return cachedImage
+        }
+        
+        if let uiImage = MockDataService.shared.getImage(for: item.imageURL) {
+            let swiftUIImage = Image(uiImage: uiImage)
+            DispatchQueue.main.async {
+                self.cachedImage = swiftUIImage
+            }
+            return swiftUIImage
+        }
+        
+        return Image(systemName: "photo")
+    }
 }
 
 #Preview {
-    let viewModel = ClothingViewModel()
+    let viewModel = HomeViewModel()
     return ClothingItemView(
         item: MockDataService.shared.clothingItems[0],
         onFavoriteToggle: {},
-        viewModel: viewModel
+        homeViewModel: viewModel
     )
     .frame(width: 160, height: 260)
     .previewLayout(.sizeThatFits)

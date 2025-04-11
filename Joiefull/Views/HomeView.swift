@@ -1,7 +1,8 @@
 import SwiftUI
+import Combine
 
 struct HomeView: View {
-    @StateObject private var viewModel = ClothingViewModel()
+    @StateObject private var viewModel = HomeViewModel()
     
     var categories: [ClothingItem.Category] {
         return ClothingItem.Category.allCases

@@ -3,19 +3,25 @@ import SwiftUI
 struct ClothingDetailView: View {
     var item: ClothingItem
     var onFavoriteToggle: () -> Void
-    @ObservedObject var viewModel: ClothingViewModel
+    @StateObject private var viewModel: ClothingDetailViewModel
     @State private var showingZoomView = false
     @State private var userRating: Int = 0
     @State private var reviewText: String = ""
     @State private var showingShareSheet = false
     @State private var itemInCart = false
     
+    init(item: ClothingItem, onFavoriteToggle: @escaping () -> Void) {
+        self.item = item
+        self.onFavoriteToggle = onFavoriteToggle
+        self._viewModel = StateObject(wrappedValue: ClothingDetailViewModel(item: item))
+    }
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 // Image with share button and zoom capability
                 ZStack(alignment: .topTrailing) {
-                    viewModel.getImage(for: item)
+                    viewModel.getImage()
                         .resizable()
                         .scaledToFill()
                         .frame(maxHeight: 450)

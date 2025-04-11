@@ -14,7 +14,7 @@ struct HomeView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     ForEach(categories, id: \.self) { category in
@@ -32,6 +32,7 @@ struct HomeView: View {
                                 // Articles de la catégorie
                                 ScrollView(.horizontal, showsIndicators: false) {
                                     HStack(spacing: 15) {
+                                        //all items
                                         ForEach(0..<categoryItems.count, id: \.self) { index in
                                             if index % 2 == 0 {
                                                 HStack(spacing: 15) {
@@ -61,6 +62,7 @@ struct HomeView: View {
                         }
                     }
                 }
+                .navigationTitle("TOTO")
             }
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {

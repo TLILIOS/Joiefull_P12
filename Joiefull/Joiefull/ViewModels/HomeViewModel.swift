@@ -1,15 +1,14 @@
 //
-//  ClothingViewModel.swift
+//  HomeViewModel.swift
 //  Joiefull
 //
-//  Created by TLiLi Hamdi on 08/04/2025.
+//  Created by TLiLi Hamdi on 09/04/2025.
 //
 
 import Foundation
 import SwiftUI
 
-@MainActor
-final class ClothingViewModel: ObservableObject {
+class HomeViewModel: ObservableObject {
     @Published var clothingItems: [ClothingItem] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
@@ -18,11 +17,20 @@ final class ClothingViewModel: ObservableObject {
     private let apiService = APIService.shared
     
     init() {
-        // Commencer avec des données fictives, puis charger les données réelles
+        // Commencer avec des données fictives
         clothingItems = MockDataService.shared.clothingItems
     }
     
+    var categories: [ClothingItem.Category] {
+        return ClothingItem.Category.allCases
+    }
     
+    // Retourne les articles filtrés par catégorie
+    func itemsForCategory(_ category: ClothingItem.Category) -> [ClothingItem] {
+        return clothingItems.filter { $0.category == category }
+    }
+    
+    @MainActor
     func fetchClothingItems() async {
         isLoading = true
         errorMessage = nil
@@ -57,29 +65,14 @@ final class ClothingViewModel: ObservableObject {
             isLoading = false
         }
     }
-    // guard let
-    // Mettre à jour les favoris
-    func toggleFavorite(for item: ClothingItem) {
-        if let index = clothingItems.firstIndex(where: { $0.id == item.id }) {
-            clothingItems[index].isFavorite.toggle()
-            
-            if clothingItems[index].isFavorite {
-                clothingItems[index].likes += 1
-            } else {
-                clothingItems[index].likes -= 1
-            }
-        }
-    }
-    // Image no UI
-    // Méthode pour obtenir l'image à partir du cache ou utiliser un placeholder
-    func getImage(for item: ClothingItem) -> Image {
-        if let imageUrl = item.imageUrl, let cachedImage = imageCache[imageUrl] {
+    
+    // Méthode pour obtenir l'image à partir du cache
+    func getImage(for imageUrl: String?, localImage: String) -> Image {
+        if let imageUrl = imageUrl, let cachedImage = imageCache[imageUrl] {
             return Image(uiImage: cachedImage)
-        } else if !item.image.isEmpty {
-            // Utiliser l'image locale si disponible
-            return Image(item.image)
+        } else if !localImage.isEmpty {
+            return Image(localImage)
         } else {
-            // Image placeholder par défaut
             return Image(systemName: "photo")
         }
     }
