@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
-
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     var categories: [ClothingItem.Category] {
         ClothingItem.Category.allCases
     }

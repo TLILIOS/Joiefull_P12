@@ -9,7 +9,9 @@ import SwiftUI
 
 struct ClothingItemView: View {
     @ObservedObject var viewModel: ClothingItemViewModel
-@ObservedObject var detailViewModel: ClothingDetailViewModel
+    @ObservedObject var detailViewModel: ClothingDetailViewModel
+    
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     var body: some View {
         NavigationLink(
             destination: ClothingDetailView(
@@ -22,8 +24,9 @@ struct ClothingItemView: View {
                     detailViewModel.getImage()
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: (UIScreen.main.bounds.width - 45) / 2, height: 180)
+                        .frame(height: 180)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .clipped() // Assure que l'image ne déborde pas
 
                     // Bouton cœur avec compteur
                     Button(action: {
@@ -81,7 +84,7 @@ struct ClothingItemView: View {
                     }
                 }
             }
-            .frame(width: (UIScreen.main.bounds.width - 45) / 2)
+            .frame(maxWidth: .infinity, maxHeight: .infinity) // Utilise tout l'espace disponible
             .background(Color(.systemBackground))
         }
         .buttonStyle(PlainButtonStyle())
