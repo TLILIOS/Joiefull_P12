@@ -40,6 +40,8 @@ struct CategorySectionView: View {
     let category: ClothingItem.Category
     let items: [ClothingItem]
     let imageCache: [String: UIImage]
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -52,50 +54,45 @@ struct CategorySectionView: View {
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 15) {
-                    ForEach(pairedItems(items: items), id: \.0.id) { first, second in
-                        CatalogPairView(first: first, second: second, imageCache: imageCache)
-                            .frame(width: UIScreen.main.bounds.width - 30)
+                    ForEach(items) { item in
+                        ClothingItemView(
+                            viewModel: ClothingItemViewModel(item: item, imageCache: imageCache),
+                            detailViewModel: ClothingDetailViewModel(item: item, imageCache: imageCache)
+                        )
+                        .frame(width: itemWidth)
                     }
                 }
                 .padding(.horizontal)
             }
-            .frame(height: 250)
+            .frame(height: sectionHeight)
 
             Spacer(minLength: 15)
         }
     }
 
-    // Fonction pour diviser la liste en paires
-    private func pairedItems(items: [ClothingItem]) -> [(ClothingItem, ClothingItem?)] {
-        var result: [(ClothingItem, ClothingItem?)] = []
-        var index = 0
-        while index < items.count {
-            let first = items[index]
-            let second = index + 1 < items.count ? items[index + 1] : nil
-            result.append((first, second))
-            index += 2
+    private var itemWidth: CGFloat {
+        switch horizontalSizeClass {
+        case .compact: // iPhone
+            return (UIScreen.main.bounds.width - 45) / 2
+        case .regular: // iPad
+            return (UIScreen.main.bounds.width - 60) / 3 // Affiche 3 éléments sur iPad
+        @unknown default:
+            return (UIScreen.main.bounds.width - 45) / 2
         }
-        return result
     }
-}
-
-struct CatalogPairView: View {
-    let first: ClothingItem
-    let second: ClothingItem?
-    let imageCache: [String: UIImage]
-
-    var body: some View {
-        HStack(spacing: 15) {
-            ClothingItemView(
-                viewModel: ClothingItemViewModel(item: first, imageCache: imageCache),
-                detailViewModel: ClothingDetailViewModel(item: first, imageCache: imageCache)
-            )
-            if let second = second {
-                ClothingItemView(
-                    viewModel: ClothingItemViewModel(item: second, imageCache: imageCache),
-                    detailViewModel: ClothingDetailViewModel(item: second, imageCache: imageCache)
-                )
-            }
+    
+    private var sectionHeight: CGFloat {
+        switch (horizontalSizeClass, verticalSizeClass) {
+        case (.compact, .compact): // iPhone en mode paysage
+            return 200
+        case (.compact, .regular): // iPhone en mode portrait
+            return 250
+        case (.regular, .compact): // iPad en mode paysage
+            return 300
+        case (.regular, .regular): // iPad en mode portrait
+            return 350
+        @unknown default:
+            return 250
         }
     }
 }

@@ -12,6 +12,8 @@ struct ClothingItemView: View {
     @ObservedObject var detailViewModel: ClothingDetailViewModel
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
+
     var body: some View {
         NavigationLink(
             destination: ClothingDetailView(
@@ -23,8 +25,8 @@ struct ClothingItemView: View {
                 ZStack(alignment: .bottomTrailing) {
                     detailViewModel.getImage()
                         .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: 180)
+                        .aspectRatio(3/4, contentMode: .fill)
+                        .frame(maxWidth: .infinity, minHeight: imageHeight, maxHeight: imageHeight)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                         .clipped() // Assure que l'image ne déborde pas
 
@@ -84,10 +86,25 @@ struct ClothingItemView: View {
                     }
                 }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity) // Utilise tout l'espace disponible
+            .frame(maxWidth: .infinity) // Utilise tout l'espace disponible
             .background(Color(.systemBackground))
         }
         .buttonStyle(PlainButtonStyle())
+    }
+
+    private var imageHeight: CGFloat {
+        switch (horizontalSizeClass, verticalSizeClass) {
+        case (.compact, .compact): // iPhone portrait
+            return 120
+        case (.compact, .regular): // iPhone paysage
+            return 180
+        case (.regular, .compact): // iPad paysage
+            return 220
+        case (.regular, .regular): // iPad portrait
+            return 300
+        @unknown default:
+            return 180
+        }
     }
 }
 
