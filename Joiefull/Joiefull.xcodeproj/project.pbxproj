@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D09420DE2DBAAFA9002CB3AF /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = D09420DD2DBAAFA9002CB3AF /* CachedAsyncImage */; };
 		D0BDC1D12DA5791100B9F0F8 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D0BDC1D02DA5791100B9F0F8 /* README.md */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D09420DE2DBAAFA9002CB3AF /* CachedAsyncImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +73,7 @@
 			);
 			name = Joiefull;
 			packageProductDependencies = (
+				D09420DD2DBAAFA9002CB3AF /* CachedAsyncImage */,
 			);
 			productName = Joiefull;
 			productReference = D09A4CE02D88F96500B57105 /* Joiefull.app */;
@@ -100,6 +103,9 @@
 			);
 			mainGroup = D09A4CD72D88F96500B57105;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				D09420DC2DBAAFA9002CB3AF /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D09A4CE12D88F96500B57105 /* Products */;
 			projectDirPath = "";
@@ -331,6 +337,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D09420DC2DBAAFA9002CB3AF /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D09420DD2DBAAFA9002CB3AF /* CachedAsyncImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D09420DC2DBAAFA9002CB3AF /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
+			productName = CachedAsyncImage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D09A4CD82D88F96500B57105 /* Project object */;
 }

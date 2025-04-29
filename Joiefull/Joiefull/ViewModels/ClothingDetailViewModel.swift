@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+
 @MainActor
 class ClothingDetailViewModel: ObservableObject {
     @Published var item: ClothingItem
@@ -16,21 +17,8 @@ class ClothingDetailViewModel: ObservableObject {
     @Published var messageSent: Bool = false
     @Published var showingZoomView: Bool = false
 
-    private let imageCache: [String: UIImage]
-
-    init(item: ClothingItem, imageCache: [String: UIImage] = [:]) {
+    init(item: ClothingItem) {
         self.item = item
-        self.imageCache = imageCache
-    }
-
-    func getImage() -> Image {
-        if let imageUrl = item.imageUrl, let cachedImage = imageCache[imageUrl] {
-            return Image(uiImage: cachedImage)
-        } else if !item.image.isEmpty {
-            return Image(item.image)
-        } else {
-            return Image(systemName: "photo")
-        }
     }
 
     func toggleFavorite() {
@@ -42,14 +30,10 @@ class ClothingDetailViewModel: ObservableObject {
         }
     }
 
-    func submitReview() async {
-        // Appel réseau ou logique d'envoi d'avis
-        reviewText = ""
-        userRating = 0
+    func toggleMessage() {
+        messageSent.toggle()
     }
-func toggleMessage() {
-    messageSent.toggle()
-    }
+    
     func toggleCart() {
         itemInCart.toggle()
     }

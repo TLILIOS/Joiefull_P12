@@ -4,7 +4,9 @@
 //
 //  Created by TLiLi Hamdi on 08/04/2025.
 //
+
 import SwiftUI
+import CachedAsyncImage
 
 struct ClothingDetailView: View {
     @ObservedObject var viewModel: ClothingDetailViewModel
@@ -38,9 +40,7 @@ struct ClothingDetailView: View {
 
     private var productImageSection: some View {
         ZStack(alignment: .topTrailing) {
-            viewModel.getImage()
-                .resizable()
-                .scaledToFill()
+            detailImageView
                 .frame(maxHeight: 450)
                 .clipped()
                 .onTapGesture {
@@ -55,13 +55,45 @@ struct ClothingDetailView: View {
             )
         }
     }
+    
+    private var detailImageView: some View {
+        Group {
+            if let imageUrl = viewModel.item.imageUrl, let url = URL(string: imageUrl) {
+                CachedAsyncImage(url: url) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .frame(width: 200, height: 200)
+                            .scaledToFill()
+                    case .failure(_):
+                        Image(systemName: "photo")
+                            .resizable()
+                            .scaledToFit()
+                    case .empty:
+                        ProgressView()
+                    @unknown default:
+                        ProgressView()
+                    }
+                }
+            } else if !viewModel.item.image.isEmpty {
+                Image(viewModel.item.image)
+                    .resizable()
+                    .scaledToFill()
+            } else {
+                Image(systemName: "photo")
+                    .resizable()
+                    .scaledToFit()
+            }
+        }
+    }
 
     private var shareButton: some View {
         ShareLink(
             item: URL(string: "https://joiefull.com/items/\(viewModel.item.id)")!,
             subject: Text("Découvrez sur Joiefull"),
             message: Text("Découvrez \"\(viewModel.item.name)\" sur Joiefull!"),
-            preview: SharePreview("Joiefull - \(viewModel.item.name)", image: viewModel.getImage())
+            preview: SharePreview("Joiefull - \(viewModel.item.name)")
         ) {
             Image(systemName: "square.and.arrow.up")
                 .font(.system(size: 18, weight: .medium))
@@ -84,7 +116,7 @@ struct ClothingDetailView: View {
             ratingView
         }
     }
-
+    
     private var priceView: some View {
         HStack {
             if let discountedPrice = viewModel.item.discountedPrice {
@@ -102,7 +134,7 @@ struct ClothingDetailView: View {
             }
         }
     }
-
+    
     private var ratingView: some View {
         HStack(spacing: 4) {
             Image(systemName: "star.fill")
@@ -111,13 +143,13 @@ struct ClothingDetailView: View {
                 .fontWeight(.medium)
         }
     }
-
+    
     private var productDescriptionSection: some View {
         Text(viewModel.item.description)
             .foregroundColor(.secondary)
             .fixedSize(horizontal: false, vertical: true)
     }
-
+    
     private var ratingAndFavoriteSection: some View {
         HStack {
             Image("Profile")
@@ -138,7 +170,7 @@ struct ClothingDetailView: View {
             favoriteButton
         }
     }
-
+    
     private var favoriteButton: some View {
         Button(action: {
             viewModel.toggleFavorite()
@@ -156,7 +188,7 @@ struct ClothingDetailView: View {
             .cornerRadius(20)
         }
     }
-
+    
     private var reviewSection: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Votre avis")
@@ -168,7 +200,7 @@ struct ClothingDetailView: View {
             submitReviewButton
         }
     }
-
+    
     private var submitReviewButton: some View {
         Button(action: {
             viewModel.toggleMessage()
@@ -181,20 +213,20 @@ struct ClothingDetailView: View {
                     .fontWeight(.bold)
             }
             .frame(width: 100, height: 20)
-                    .padding(.vertical, 10)
-                    .padding(.horizontal, 10)
-                    .background(viewModel.messageSent ? Color.green : Color.orange)
-                    .background((viewModel.reviewText.isEmpty || viewModel.userRating == 0) ? Color.gray.opacity(0.5) : Color.orange)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-                    .scaleEffect((viewModel.reviewText.isEmpty || viewModel.userRating == 0) ? 1.0 : 1.05)
-                    .animation(.easeInOut(duration: 0.2), value: viewModel.reviewText)
-                    .animation(.easeInOut(duration: 0.2), value: viewModel.userRating)
+            .padding(.vertical, 10)
+            .padding(.horizontal, 10)
+            .background(viewModel.messageSent ? Color.green : Color.orange)
+            .background((viewModel.reviewText.isEmpty || viewModel.userRating == 0) ? Color.gray.opacity(0.5) : Color.orange)
+            .foregroundColor(.white)
+            .cornerRadius(8)
+            .scaleEffect((viewModel.reviewText.isEmpty || viewModel.userRating == 0) ? 1.0 : 1.05)
+            .animation(.easeInOut(duration: 0.2), value: viewModel.reviewText)
+            .animation(.easeInOut(duration: 0.2), value: viewModel.userRating)
             
         }
         .disabled(viewModel.reviewText.isEmpty || viewModel.userRating == 0)
     }
-
+    
     private var addToCartButton: some View {
         Button(action: {
             viewModel.toggleCart()
@@ -213,7 +245,7 @@ struct ClothingDetailView: View {
         }
         .padding(.bottom, 20)
     }
-
+    
     private var navigationTitleView: some View {
         HStack {
             Text("Home")

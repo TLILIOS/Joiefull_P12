@@ -4,8 +4,8 @@
 //
 //  Created by TLiLi Hamdi on 08/04/2025.
 //
-
 import SwiftUI
+import CachedAsyncImage
 
 struct ZoomableImageView: View {
     @ObservedObject var viewModel: ClothingDetailViewModel
@@ -17,7 +17,36 @@ struct ZoomableImageView: View {
 
     var body: some View {
         ZStack {
-            Color.black.edgesIgnoringSafeArea(.all)
+            Color.black.opacity(0.8)
+                .edgesIgnoringSafeArea(.all)
+
+            zoomableImageContent
+                .scaleEffect(scale)
+                .offset(offset)
+                .gesture(
+                    DragGesture()
+                        .onChanged { value in
+                            offset = CGSize(
+                                width: lastOffset.width + value.translation.width,
+                                height: lastOffset.height + value.translation.height
+                            )
+                        }
+                        .onEnded { _ in
+                            lastOffset = offset
+                        }
+                )
+                .gesture(
+                    MagnificationGesture()
+                        .onChanged { value in
+                            scale = lastScale * value
+                        }
+                        .onEnded { _ in
+                            lastScale = scale
+                        }
+                )
+                .onTapGesture(count: 2) {
+                    resetZoom()
+                }
 
             VStack {
                 HStack {
@@ -26,54 +55,52 @@ struct ZoomableImageView: View {
                         isPresented = false
                     }) {
                         Image(systemName: "xmark")
-                            .font(.system(size: 20, weight: .bold))
+                            .font(.title)
                             .foregroundColor(.white)
                             .padding()
                     }
                 }
-
-                Spacer()
-
-                viewModel.getImage()
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .scaleEffect(scale)
-                    .offset(offset)
-                    .gesture(
-                        MagnificationGesture()
-                            .onChanged { value in
-                                let delta = value / lastScale
-                                lastScale = value
-                                scale = min(max(scale * delta, 1), 4)
-                            }
-                            .onEnded { _ in
-                                lastScale = 1.0
-                            }
-                    )
-                    .gesture(
-                        DragGesture()
-                            .onChanged { value in
-                                offset = CGSize(
-                                    width: lastOffset.width + value.translation.width,
-                                    height: lastOffset.height + value.translation.height
-                                )
-                            }
-                            .onEnded { _ in
-                                lastOffset = offset
-                            }
-                    )
-                    .onTapGesture(count: 2) {
-                        withAnimation {
-                            scale = scale > 1 ? 1 : 2
-                            if scale == 1 {
-                                offset = .zero
-                                lastOffset = .zero
-                            }
-                        }
-                    }
-
                 Spacer()
             }
         }
+        .edgesIgnoringSafeArea(.all)
+    }
+    
+    private var zoomableImageContent: some View {
+        Group {
+            if let imageUrl = viewModel.item.imageUrl, let url = URL(string: imageUrl) {
+                CachedAsyncImage(url: url) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFit()
+                    case .failure(_):
+                        Image(systemName: "photo")
+                            .resizable()
+                            .scaledToFit()
+                    case .empty:
+                        ProgressView()
+                    @unknown default:
+                        ProgressView()
+                    }
+                }
+            } else if !viewModel.item.image.isEmpty {
+                Image(viewModel.item.image)
+                    .resizable()
+                    .scaledToFit()
+            } else {
+                Image(systemName: "photo")
+                    .resizable()
+                    .scaledToFit()
+            }
+        }
+    }
+
+    private func resetZoom() {
+        scale = 1.0
+        lastScale = 1.0
+        offset = .zero
+        lastOffset = .zero
     }
 }

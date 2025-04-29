@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CachedAsyncImage
 
 struct ClothingItemView: View {
     @ObservedObject var viewModel: ClothingItemViewModel
@@ -14,22 +15,29 @@ struct ClothingItemView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.verticalSizeClass) private var verticalSizeClass
 
+    private var horizontalCount: Int {
+            if horizontalSizeClass == .compact {
+                return 2 // iPhone en mode portrait
+            } else if horizontalSizeClass == .regular && verticalSizeClass == .regular || horizontalSizeClass == .regular && verticalSizeClass == .compact {
+                return 5 // iPad & iPhone en mode paysage et iPad en mode portrait
+            } else {
+                return 3 // Par défaut
+            }
+        }
+
     var body: some View {
         NavigationLink(
             destination: ClothingDetailView(
-                viewModel: ClothingDetailViewModel(item: viewModel.item, imageCache: viewModel.imageCache)
+                viewModel: ClothingDetailViewModel(item: viewModel.item)
             )
         ) {
             VStack(alignment: .leading, spacing: 8) {
                 // Image avec bouton favoris
                 ZStack(alignment: .bottomTrailing) {
-                    detailViewModel.getImage()
-                        .resizable()
-                        .aspectRatio(3/4, contentMode: .fill)
-                        .frame(maxWidth: .infinity, minHeight: imageHeight, maxHeight: imageHeight)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                        .clipped() // Assure que l'image ne déborde pas
-
+                    imageView
+                        .containerRelativeFrame(.horizontal, count: horizontalCount, spacing: 10)
+                                .clipped()
+                                .cornerRadius(8)
                     // Bouton cœur avec compteur
                     Button(action: {
                         viewModel.toggleFavorite()
@@ -49,7 +57,6 @@ struct ClothingItemView: View {
                     }
                 }
 
-                // Infos du produit
                 VStack(alignment: .leading, spacing: 3) {
                     // Nom du produit
                     Text(viewModel.item.name)
@@ -86,50 +93,42 @@ struct ClothingItemView: View {
                     }
                 }
             }
-            .frame(maxWidth: .infinity) // Utilise tout l'espace disponible
+            .frame(maxWidth: .infinity)
             .background(Color(.systemBackground))
         }
         .buttonStyle(PlainButtonStyle())
     }
-
-    private var imageHeight: CGFloat {
-        switch (horizontalSizeClass, verticalSizeClass) {
-        case (.compact, .compact): // iPhone portrait
-            return 120
-        case (.compact, .regular): // iPhone paysage
-            return 180
-        case (.regular, .compact): // iPad paysage
-            return 220
-        case (.regular, .regular): // iPad portrait
-            return 300
-        @unknown default:
-            return 180
+    
+    private var imageView: some View {
+        Group {
+            if let imageUrl = viewModel.item.imageUrl, let url = URL(string: imageUrl) {
+                CachedAsyncImage(url: url) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .aspectRatio(1, contentMode: .fill)                            
+                    case .failure(_):
+                        Image(systemName: "photo")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    case .empty:
+                        ProgressView()
+                    @unknown default:
+                        ProgressView()
+                    }
+                }
+            } else if !viewModel.item.image.isEmpty {
+                Image(viewModel.item.image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                Image(systemName: "photo")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            }
         }
+        .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 }
-
-struct ClothingItemView_Previews: PreviewProvider {
-    static var previews: some View {
-        let mockItem = ClothingItem(
-            name: "T-shirt Joiefull",
-            originalPrice: 29.99,
-            discountedPrice: 19.99,
-            rating: 4.5,
-            category: .hauts,
-            image: "clothes",
-            imageUrl: nil,
-            description: "Un t-shirt confortable et stylé.",
-            likes: 42,
-            isFavorite: true
-        )
-        let mockImageCache: [String: UIImage] = [:]
-        let mockViewModel = ClothingItemViewModel(item: mockItem, imageCache: mockImageCache)
-        let mockDetailViewModel = ClothingDetailViewModel(item: mockItem, imageCache: mockImageCache)
-
-        ClothingItemView(viewModel: mockViewModel, detailViewModel: mockDetailViewModel)
-            .previewLayout(.sizeThatFits)
-            .padding()
-    }
-}
-
-
