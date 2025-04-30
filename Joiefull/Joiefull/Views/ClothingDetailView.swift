@@ -10,7 +10,8 @@ import CachedAsyncImage
 
 struct ClothingDetailView: View {
     @ObservedObject var viewModel: ClothingDetailViewModel
-
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
@@ -24,24 +25,27 @@ struct ClothingDetailView: View {
                     addToCartButton
                 }
                 .padding()
-                .padding(.bottom, 60)
             }
         }
-        .navigationBarBackButtonHidden(false)
-        .navigationBarTitle("", displayMode: .inline)
+//        .navigationBarBackButtonHidden(false)
+//        .navigationBarTitle("", displayMode: .inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                navigationTitleView
+                if horizontalSizeClass == .compact {
+                    navigationTitleView
+                }
+                
             }
         }
     }
-
+    
     // MARK: - UI Components
-
+    
     private var productImageSection: some View {
         ZStack(alignment: .topTrailing) {
             detailImageView
                 .frame(maxHeight: 450)
+                .cornerRadius(15)
                 .clipped()
                 .onTapGesture {
                     viewModel.showingZoomView = true
@@ -64,8 +68,9 @@ struct ClothingDetailView: View {
                     case .success(let image):
                         image
                             .resizable()
-                            .frame(width: 200, height: 200)
-                            .scaledToFill()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(maxWidth: .infinity)
+                            .clipped()
                     case .failure(_):
                         Image(systemName: "photo")
                             .resizable()
@@ -87,7 +92,7 @@ struct ClothingDetailView: View {
             }
         }
     }
-
+    
     private var shareButton: some View {
         ShareLink(
             item: URL(string: "https://joiefull.com/items/\(viewModel.item.id)")!,
@@ -103,7 +108,7 @@ struct ClothingDetailView: View {
                 .clipShape(Circle())
         }
     }
-
+    
     private var productHeaderSection: some View {
         HStack {
             VStack(alignment: .leading, spacing: 6) {
@@ -196,7 +201,7 @@ struct ClothingDetailView: View {
             TextField("Partagez vos impressions sur cette pièce", text: $viewModel.reviewText)
                 .padding()
                 .background(Color(.systemGray6))
-                .cornerRadius(8)
+                .cornerRadius(15)
             submitReviewButton
         }
     }
@@ -241,7 +246,7 @@ struct ClothingDetailView: View {
             .padding()
             .background(viewModel.itemInCart ? Color.green : Color.orange)
             .foregroundColor(.white)
-            .cornerRadius(10)
+            .cornerRadius(15)
         }
         .padding(.bottom, 20)
     }
