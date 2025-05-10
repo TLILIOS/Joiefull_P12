@@ -18,8 +18,8 @@ struct ZoomableImageView: View {
     var body: some View {
         ZStack {
             Color.black.opacity(0.8)
-                .edgesIgnoringSafeArea(.all)
-
+                .ignoresSafeArea()
+                .accessibilityHidden(true)
             zoomableImageContent
                 .scaleEffect(scale)
                 .offset(offset)
@@ -35,7 +35,7 @@ struct ZoomableImageView: View {
                             lastOffset = offset
                         }
                 )
-                .gesture(
+                .simultaneousGesture(
                     MagnificationGesture()
                         .onChanged { value in
                             scale = lastScale * value
@@ -59,11 +59,12 @@ struct ZoomableImageView: View {
                             .foregroundColor(.white)
                             .padding()
                     }
+                    .accessibilityLabel("Fermer la vue agrandie")
+                    .accessibilityAddTraits(.isButton)
                 }
                 Spacer()
             }
         }
-        .edgesIgnoringSafeArea(.all)
     }
     
     private var zoomableImageContent: some View {

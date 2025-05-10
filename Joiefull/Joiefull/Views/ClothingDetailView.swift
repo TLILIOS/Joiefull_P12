@@ -27,8 +27,6 @@ struct ClothingDetailView: View {
                 .padding()
             }
         }
-//        .navigationBarBackButtonHidden(false)
-//        .navigationBarTitle("", displayMode: .inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 if horizontalSizeClass == .compact {
@@ -115,6 +113,8 @@ struct ClothingDetailView: View {
                 Text(viewModel.item.name)
                     .font(.title2)
                     .fontWeight(.bold)
+                    .allowsTightening(true)
+
                 priceView
             }
             Spacer()
@@ -128,14 +128,18 @@ struct ClothingDetailView: View {
                 Text("\(Int(discountedPrice))€")
                     .font(.title3)
                     .fontWeight(.bold)
+                    .allowsTightening(true)
                 Text("\(Int(viewModel.item.originalPrice))€")
                     .font(.subheadline)
                     .strikethrough()
                     .foregroundColor(.gray)
+                    .allowsTightening(true)
             } else {
                 Text("\(Int(viewModel.item.originalPrice))€")
                     .font(.title3)
                     .fontWeight(.bold)
+                    .allowsTightening(true)
+
             }
         }
     }
@@ -146,6 +150,8 @@ struct ClothingDetailView: View {
                 .foregroundColor(.orange)
             Text(String(format: "%.1f", viewModel.item.rating))
                 .fontWeight(.medium)
+                .allowsTightening(true)
+
         }
     }
     
@@ -153,19 +159,22 @@ struct ClothingDetailView: View {
         Text(viewModel.item.description)
             .foregroundColor(.secondary)
             .fixedSize(horizontal: false, vertical: true)
+            .allowsTightening(true)
+
     }
     
     private var ratingAndFavoriteSection: some View {
         HStack {
             Image("Profile")
                 .resizable()
-                .frame(width: 40, height: 40)
+                .frame(width: 50, height: 50)
                 .clipShape(Circle())
                 .foregroundColor(.gray)
             HStack {
                 ForEach(1...5, id: \.self) { star in
                     Image(systemName: star <= viewModel.userRating ? "star.fill" : "star")
-                        .foregroundColor(.orange)
+                        .foregroundColor(.gray)
+                        .font(.system(size: 20))
                         .onTapGesture {
                             viewModel.userRating = star
                         }
@@ -176,30 +185,58 @@ struct ClothingDetailView: View {
         }
     }
     
-    private var favoriteButton: some View {
+     var favoriteButton: some View {
         Button(action: {
-            viewModel.toggleFavorite()
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                viewModel.toggleFavorite()
+            }
         }) {
             HStack(spacing: 6) {
                 Image(systemName: viewModel.item.isFavorite ? "heart.fill" : "heart")
                     .foregroundColor(viewModel.item.isFavorite ? .red : .primary)
-                    .font(.system(size: 18))
+                    .font(.system(size: 20, weight: .semibold))
+                    .scaleEffect(viewModel.item.isFavorite ? 1.1 : 1.0)
+                
                 Text("\(viewModel.item.likes)")
                     .font(.system(size: 16, weight: .medium))
+                    .allowsTightening(true)
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .background(Color(.systemGray6))
-            .cornerRadius(20)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 10)
+            .background(
+                Capsule()
+                    .fill(viewModel.item.isFavorite ?
+                          Color(.systemGray6).opacity(0.9) :
+                          Color(.systemGray6))
+            )
+            .overlay(
+                Capsule()
+                    .stroke(viewModel.item.isFavorite ? Color.red.opacity(0.3) : Color.clear, lineWidth: 1)
+            )
+            .shadow(color: Color.black.opacity(0.1), radius: 3, x: 0, y: 1)
+        }
+        .buttonStyle(ScaleButtonStyle())
+        .accessibilityLabel(viewModel.item.isFavorite ? "Retirer des favoris" : "Ajouter aux favoris")
+        .accessibilityHint("\(viewModel.item.likes) mentions J'aime")
+    }
+
+   
+    struct ScaleButtonStyle: ButtonStyle {
+        func makeBody(configuration: Configuration) -> some View {
+            configuration.label
+                .scaleEffect(configuration.isPressed ? 0.95 : 1)
+                .animation(.easeInOut(duration: 0.2), value: configuration.isPressed)
         }
     }
+
     
     private var reviewSection: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Votre avis")
                 .font(.headline)
+                .allowsTightening(true)
             TextField("Partagez vos impressions sur cette pièce", text: $viewModel.reviewText)
-                .padding()
+                .padding(30)
                 .background(Color(.systemGray6))
                 .cornerRadius(15)
             submitReviewButton
@@ -216,8 +253,9 @@ struct ClothingDetailView: View {
                     .font(.system(size: 18))
                 Text(viewModel.messageSent ? "Envoyé" : "Envoyer")
                     .fontWeight(.bold)
+                    .allowsTightening(true)
             }
-            .frame(width: 100, height: 20)
+            .frame(width: 100, height: 30)
             .padding(.vertical, 10)
             .padding(.horizontal, 10)
             .background(viewModel.messageSent ? Color.green : Color.orange)
@@ -241,6 +279,8 @@ struct ClothingDetailView: View {
                     .font(.system(size: 18))
                 Text(viewModel.itemInCart ? "Ajouté au panier" : "Ajouter au panier")
                     .fontWeight(.bold)
+                    .allowsTightening(true)
+
             }
             .frame(maxWidth: .infinity)
             .padding()
@@ -248,6 +288,8 @@ struct ClothingDetailView: View {
             .foregroundColor(.white)
             .cornerRadius(15)
         }
+        .accessibilityIdentifier("add_to_cart_button")
+        .accessibilityValue(viewModel.itemInCart ? "Ajouté" : "Non ajouté")
         .padding(.bottom, 20)
     }
     
@@ -256,6 +298,8 @@ struct ClothingDetailView: View {
             Text("Home")
                 .foregroundColor(.blue)
                 .fontWeight(.medium)
+                .allowsTightening(true)
+
             Spacer()
         }
     }
