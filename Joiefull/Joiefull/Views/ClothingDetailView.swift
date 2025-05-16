@@ -173,7 +173,7 @@ struct ClothingDetailView: View {
             HStack {
                 ForEach(1...5, id: \.self) { star in
                     Image(systemName: star <= viewModel.userRating ? "star.fill" : "star")
-                        .foregroundColor(.gray)
+                        .foregroundColor(star <= viewModel.userRating ? .orange : .gray)
                         .font(.system(size: 20))
                         .onTapGesture {
                             viewModel.userRating = star
@@ -184,52 +184,14 @@ struct ClothingDetailView: View {
             favoriteButton
         }
     }
-    
-     var favoriteButton: some View {
-        Button(action: {
-            withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
-                viewModel.toggleFavorite()
-            }
-        }) {
-            HStack(spacing: 6) {
-                Image(systemName: viewModel.item.isFavorite ? "heart.fill" : "heart")
-                    .foregroundColor(viewModel.item.isFavorite ? .red : .primary)
-                    .font(.system(size: 20, weight: .semibold))
-                    .scaleEffect(viewModel.item.isFavorite ? 1.1 : 1.0)
-                
-                Text("\(viewModel.item.likes)")
-                    .font(.system(size: 16, weight: .medium))
-                    .allowsTightening(true)
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 10)
-            .background(
-                Capsule()
-                    .fill(viewModel.item.isFavorite ?
-                          Color(.systemGray6).opacity(0.9) :
-                          Color(.systemGray6))
-            )
-            .overlay(
-                Capsule()
-                    .stroke(viewModel.item.isFavorite ? Color.red.opacity(0.3) : Color.clear, lineWidth: 1)
-            )
-            .shadow(color: Color.black.opacity(0.1), radius: 3, x: 0, y: 1)
-        }
-        .buttonStyle(ScaleButtonStyle())
-        .accessibilityLabel(viewModel.item.isFavorite ? "Retirer des favoris" : "Ajouter aux favoris")
-        .accessibilityHint("\(viewModel.item.likes) mentions J'aime")
+    private var favoriteButton: some View {
+        FavoriteButton(
+            isFavorite: viewModel.item.isFavorite,
+            likes: viewModel.item.likes,
+            onToggleFavorite: { viewModel.toggleFavorite() }
+        )
     }
 
-   
-    struct ScaleButtonStyle: ButtonStyle {
-        func makeBody(configuration: Configuration) -> some View {
-            configuration.label
-                .scaleEffect(configuration.isPressed ? 0.95 : 1)
-                .animation(.easeInOut(duration: 0.2), value: configuration.isPressed)
-        }
-    }
-
-    
     private var reviewSection: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Votre avis")

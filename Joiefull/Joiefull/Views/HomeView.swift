@@ -45,12 +45,12 @@ struct CategorySectionView: View {
                         }
                     }
                     if isIpad && selectedItem != nil {
-                            // Ajoute une vue vide de la largeur du panneau détail
+                        // Ajoute une vue vide de la largeur du panneau détail
                         Color.clear
                             .containerRelativeFrame(.horizontal) { length, _ in
                                 length * 0.4
                             }
-                        }
+                    }
                 }
                 .padding()
             }
@@ -89,6 +89,12 @@ struct HomeView: View {
                         }
                     }
                 }
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    if isIpad && selectedItem != nil {
+                        selectedItem = nil
+                    }
+                }
                 
                 // Detail view pour iPad
                 if isIpad, let item = selectedItem {
@@ -109,26 +115,17 @@ struct HomeView: View {
                             selectedItem = nil
                         }
                         .zIndex(1) // Assurez-vous que cette vue est au-dessus
+                        .allowsHitTesting(true)
                 }
             }
-            .contentShape(Rectangle())
-            .simultaneousGesture(
-                TapGesture()
-                    .onEnded { _ in
-                        // Ce gestionnaire sera exécuté seulement si aucun autre gestionnaire n'a consommé le tap
-                        if isIpad && selectedItem != nil {
-                            selectedItem = nil
-                        }
-                    }
-            )
             .navigationBarTitleDisplayMode(.inline)
             .task { await viewModel.fetchClothingItems() }
         }
     }
 }
 
-
 #Preview {
     HomeView()
 }
+
 

@@ -18,13 +18,13 @@ struct ContentView: View {
                 layoutValues.horizontalSizeClass = horizontalSizeClass
                 layoutValues.verticalSizeClass = verticalSizeClass
             }
-            .onChange(of: horizontalSizeClass) { newValue in
-                layoutValues.horizontalSizeClass = newValue
+            .onChange(of: horizontalSizeClass) {
+                layoutValues.horizontalSizeClass = horizontalSizeClass
             }
-            .onChange(of: verticalSizeClass) { newValue in
-                layoutValues.verticalSizeClass = newValue
+            .onChange(of: verticalSizeClass) {
+                layoutValues.verticalSizeClass = verticalSizeClass
             }
-            // Ajoutez ceci pour détecter les changements d'orientation
+//détecter les changements d'orientation
             .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
                 layoutValues.screenSize = UIScreen.main.bounds.size
             }
@@ -34,5 +34,6 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .environmentObject(LayoutValues())
 }
 

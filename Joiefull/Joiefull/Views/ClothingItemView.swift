@@ -64,29 +64,15 @@ struct ClothingItemView: View {
                     .containerRelativeFrame(.horizontal, count: horizontalCount, spacing: 10)
                     .clipped()
                     .cornerRadius(15)
-                // Bouton cœur avec compteur
-                Button(action: {
-                    viewModel.toggleFavorite()
-                }) {
-                    HStack(spacing: 4) {
-                        Text("\(viewModel.item.likes)")
-                            .font(.caption)
-                            .foregroundColor(.black)
-
-                        Image(systemName: viewModel.item.isFavorite ? "heart.fill" : "heart")
-                            .foregroundColor(.black)
-                    }
-                    .padding(6)
-                    .background(Color.white)
-                    .cornerRadius(20)
-                    .padding(8)
-                }
-                .accessibilityLabel(viewModel.item.isFavorite ?
-                "Retirer des favoris, \(viewModel.item.likes) mentions" :
-                "Ajouter aux favoris, \(viewModel.item.likes) mentions")
-                .accessibilityHint("Double clic pour \(viewModel.item.isFavorite ? "retirer" : "ajouter")")
+                
+                FavoriteButton(
+                    isFavorite: viewModel.item.isFavorite,
+                    likes: viewModel.item.likes,
+                    onToggleFavorite: { viewModel.toggleFavorite() }
+                )
+                .scaleEffect(0.8)  
+                .padding(8)
             }
-
             VStack(alignment: .leading, spacing: 3) {
                 // Nom du produit
                 Text(viewModel.item.name)
@@ -110,6 +96,8 @@ struct ClothingItemView: View {
                             .fontWeight(.bold)
                     }
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Prix: \(Int(viewModel.item.discountedPrice ?? viewModel.item.originalPrice)) euros\(viewModel.item.discountedPrice != nil ? ", prix initial \(Int(viewModel.item.originalPrice)) euros" : "")")
 
                 // Notation
                 HStack(spacing: 2) {
