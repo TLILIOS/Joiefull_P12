@@ -217,7 +217,7 @@ struct ClothingDetailView: View {
                     .fontWeight(.bold)
                     .allowsTightening(true)
             }
-            .frame(width: 100, height: 30)
+            .frame(width: 200, height: 30)
             .padding(.vertical, 10)
             .padding(.horizontal, 10)
             .background(viewModel.messageSent ? Color.green : Color.orange)
