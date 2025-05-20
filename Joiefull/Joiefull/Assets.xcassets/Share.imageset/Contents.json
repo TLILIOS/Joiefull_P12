@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Capture d’écran 2025-05-19 à 16.58.43.png",
+      "filename" : "Layer_1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "Layer_1@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "Layer_1@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

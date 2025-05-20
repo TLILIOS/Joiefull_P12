@@ -98,13 +98,11 @@ struct ClothingDetailView: View {
             message: Text("Découvrez \"\(viewModel.item.name)\" sur Joiefull!"),
             preview: SharePreview("Joiefull - \(viewModel.item.name)")
         ) {
-            Image(systemName: "square.and.arrow.up")
-                .font(.system(size: 18, weight: .medium))
-                .foregroundColor(.primary)
-                .padding(8)
-                .background(Color.white.opacity(0.9))
-                .clipShape(Circle())
+            Image("Share")
+                .frame(width: 40, height: 40)
+                .shadow(color: Color.white.opacity(0.8), radius: 6, x: 0, y: 0)
         }
+        .padding()
     }
     
     private var productHeaderSection: some View {

@@ -13,9 +13,10 @@ class HomeViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
 
-    private let apiService = APIService.shared
+    private let apiService: NetworkService
 
-    init() {
+    init(apiService: NetworkService = APIService.shared) {
+        self.apiService = apiService
         clothingItems = MockDataService.shared.clothingItems
     }
 

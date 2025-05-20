@@ -8,10 +8,13 @@
 import SwiftUI
 
 struct SplashScreenView: View {
+    var imageName: String {
+            UIDevice.current.userInterfaceIdiom == .pad ? "Ecran de démarrage" : "IphoneEcran de démarrage"
+        }
     var body: some View {
-        Image("JoieFull")
+        Image(imageName)
             .resizable()
-            .scaledToFit()
+            .scaledToFill()
             .ignoresSafeArea()
     }
 }

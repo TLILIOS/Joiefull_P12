@@ -6,8 +6,10 @@
 //
 
 import Foundation
-
-class APIService {
+protocol NetworkService {
+    func fetchClothingItems() async throws -> [ClothingItemAPI]
+}
+class APIService: NetworkService {
     static let shared = APIService()
     private let clothesURL = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/api/clothes.json"
     
@@ -26,6 +28,7 @@ class APIService {
         }
         
         let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
         return try decoder.decode([ClothingItemAPI].self, from: data)
     }
     

@@ -11,12 +11,28 @@
 		D0BDC1D12DA5791100B9F0F8 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D0BDC1D02DA5791100B9F0F8 /* README.md */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		D03574032DDBA3D2008D0727 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D09A4CD82D88F96500B57105 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D09A4CDF2D88F96500B57105;
+			remoteInfo = Joiefull;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		D03573FF2DDBA3D2008D0727 /* JoiefullTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JoiefullTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D09A4CE02D88F96500B57105 /* Joiefull.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Joiefull.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0BDC1D02DA5791100B9F0F8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		D03574002DDBA3D2008D0727 /* JoiefullTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = JoiefullTests;
+			sourceTree = "<group>";
+		};
 		D09A4CE22D88F96500B57105 /* Joiefull */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Joiefull;
@@ -25,6 +41,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		D03573FC2DDBA3D2008D0727 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D09A4CDD2D88F96500B57105 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -41,6 +64,7 @@
 			children = (
 				D0BDC1D02DA5791100B9F0F8 /* README.md */,
 				D09A4CE22D88F96500B57105 /* Joiefull */,
+				D03574002DDBA3D2008D0727 /* JoiefullTests */,
 				D09A4CE12D88F96500B57105 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -49,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				D09A4CE02D88F96500B57105 /* Joiefull.app */,
+				D03573FF2DDBA3D2008D0727 /* JoiefullTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -56,6 +81,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		D03573FE2DDBA3D2008D0727 /* JoiefullTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D03574052DDBA3D2008D0727 /* Build configuration list for PBXNativeTarget "JoiefullTests" */;
+			buildPhases = (
+				D03573FB2DDBA3D2008D0727 /* Sources */,
+				D03573FC2DDBA3D2008D0727 /* Frameworks */,
+				D03573FD2DDBA3D2008D0727 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D03574042DDBA3D2008D0727 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				D03574002DDBA3D2008D0727 /* JoiefullTests */,
+			);
+			name = JoiefullTests;
+			packageProductDependencies = (
+			);
+			productName = JoiefullTests;
+			productReference = D03573FF2DDBA3D2008D0727 /* JoiefullTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		D09A4CDF2D88F96500B57105 /* Joiefull */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D09A4CEE2D88F96700B57105 /* Build configuration list for PBXNativeTarget "Joiefull" */;
@@ -86,9 +134,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1620;
+				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
+					D03573FE2DDBA3D2008D0727 = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = D09A4CDF2D88F96500B57105;
+					};
 					D09A4CDF2D88F96500B57105 = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -112,11 +164,19 @@
 			projectRoot = "";
 			targets = (
 				D09A4CDF2D88F96500B57105 /* Joiefull */,
+				D03573FE2DDBA3D2008D0727 /* JoiefullTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		D03573FD2DDBA3D2008D0727 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D09A4CDE2D88F96500B57105 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -128,6 +188,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		D03573FB2DDBA3D2008D0727 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D09A4CDC2D88F96500B57105 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -137,7 +204,53 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		D03574042DDBA3D2008D0727 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D09A4CDF2D88F96500B57105 /* Joiefull */;
+			targetProxy = D03574032DDBA3D2008D0727 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		D03574062DDBA3D2008D0727 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5FZ8ZXZS35;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.TliliOS.JoiefullTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Joiefull.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Joiefull";
+			};
+			name = Debug;
+		};
+		D03574072DDBA3D2008D0727 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5FZ8ZXZS35;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.TliliOS.JoiefullTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Joiefull.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Joiefull";
+			};
+			name = Release;
+		};
 		D09A4CEC2D88F96700B57105 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -320,6 +433,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		D03574052DDBA3D2008D0727 /* Build configuration list for PBXNativeTarget "JoiefullTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D03574062DDBA3D2008D0727 /* Debug */,
+				D03574072DDBA3D2008D0727 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		D09A4CDB2D88F96500B57105 /* Build configuration list for PBXProject "Joiefull" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

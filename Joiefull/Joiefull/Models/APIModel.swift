@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ClothingItemAPI: Codable, Identifiable {
+struct ClothingItemAPI: Decodable, Identifiable {
     let id: Int
     let picture: PictureAPI
     let name: String
@@ -16,11 +16,6 @@ struct ClothingItemAPI: Codable, Identifiable {
     let likes: Int
     let price: Double
     let originalPrice: Double
-    
-    enum CodingKeys: String, CodingKey {
-        case id, picture, name, category, likes, price
-        case originalPrice = "original_price"
-    }
 }
 
 struct PictureAPI: Codable {
@@ -28,7 +23,7 @@ struct PictureAPI: Codable {
     let description: String
 }
 
-enum CategoryAPI: String, Codable, CaseIterable {
+enum CategoryAPI: String, Decodable, CaseIterable {
     case tops = "TOPS"
     case bottoms = "BOTTOMS"
     case shoes = "SHOES"
